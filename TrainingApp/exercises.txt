@@ -1,0 +1,8 @@
+quadriceps,squat
+hamstrings,leg_curl
+calves,calf_raise
+glutes,lunge
+chest,bench_press
+triceps,tricep_extension
+biceps,curl
+shoulders,overhead_press
