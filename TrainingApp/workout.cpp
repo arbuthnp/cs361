@@ -1,26 +1,25 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 #include "exercise.h"
 
-void populateExercises(string);
+void populateExercises(string, vector<Exercise>);
 string convertFileToTxt(string);
 void exerciseList(ofstream &, string);
-void populateExerciseVector(vector<Exercise*>);
+void populateExerciseVector(vector<Exercise>&, ifstream&);
+string readString(ifstream&);
 
 int main() {
     // Vector of exercise objects
-    vector<Exercise*> workout;
+    vector<Exercise> workout;
 
-    populateExercises("exercises.txt"); //works
-
-
-
+    populateExercises("exercises.txt", workout); //works
     return 0;
 }
 
 // Populates vector of exercises
-void populateExercises(string exerciseFile) {
+void populateExercises(string exerciseFile, vector<Exercise> workout) {
     ifstream fileReader;
     ofstream fileWriter;
     exerciseFile = convertFileToTxt(exerciseFile);
@@ -28,6 +27,7 @@ void populateExercises(string exerciseFile) {
     if(!fileReader.is_open()) { //couldn't find file
         exerciseList(fileWriter, exerciseFile);
     }
+    populateExerciseVector(workout, fileReader);
     fileReader.close();
 }
 
@@ -62,26 +62,26 @@ void exerciseList(ofstream &fileWriter, string exerciseFile) { // Store as "musc
     
 }
 
-string readString(ifstream &fileReader) {
-    char buf[256];
-    fileReader.getline(&(buf[0]), 256, ',');
-    return string(buf);
-}
+void populateExerciseVector(vector<Exercise> &exerciseVector, ifstream& fileReader) {
+    
+    string output = "";
+    stringstream ss;
 
-void populateExerciseVector(vector<Exercise> &workout, ifstream& fileReader, string exerciseFile) {
-    fileReader.open(exerciseFile);
-    if(fileReader.is_open()) {
-        while(1) {
-            int i = 0;
-            string exercisePart = readString(fileReader);
-            if (fileReader.eof()) { // at the end of file
-                break;
-            }
-            Exercise* e = new Exercise(exercisePart, exercisePart); //this wont work now
-            if (i % 2 == 0) {
-
-            }
-            
+    while(getline(fileReader, output)) {
+        string bodyPart = "";
+        string name = "";
+        int commaSpot = output.find(',');
+        for (int i = 0; i < commaSpot; i++)
+        {
+            bodyPart += output.at(i);
         }
+        for (int i = commaSpot+1; i < int(output.length()); i++)
+        {
+            name += output.at(i);
+        }
+        
+        Exercise *e = new Exercise(name, bodyPart); // by this point both will be filled
+        exerciseVector.push_back(*e); //de-ref e
     }
+    
 }
