@@ -11,6 +11,7 @@ void exerciseList(ofstream &, string);
 void populateExerciseVector(vector<Exercise>&, ifstream&);
 string readString(ifstream&);
 void do_it_yourself(vector<Exercise>&);
+void tutorial(vector <Exercise>&);
 void do_it_yourself_responses(string, vector<Exercise>&);
 void do_it_yourself_resp_1(vector<Exercise>&);
 void tutorial_response_2();
@@ -32,8 +33,11 @@ int main() {
     {
         resp.at(i) = toupper(resp.at(i));
     }
-    if(resp == "SELF" || resp == "S") {
+    if(resp == "SELF" || resp == "S") { //show options right away
         do_it_yourself(workout);
+    }
+    else { // tutorial
+        tutorial(workout);
     }
     return 0;
 }
@@ -211,4 +215,19 @@ void create_workout_program(int days, int minutes, int numExercises, vector<Exer
 
 void write_workout_to_file() {
 
+}
+
+void tutorial(vector<Exercise>& exercises) {
+    string x;
+    cout << "When you first load into the program, there will be a list of options to choose from." << endl;
+    cout << "    This list of options will give you five options each pertaining to different" << endl;
+    cout << "    things that the program currently allows you to do." << endl;
+    cout << "If you choose option number 1, then the program will lead you through creating" << endl;
+    cout << "    a program of your own. Right now, the defaults are set to have you doing 3 sets" << endl;
+    cout << "    of a randomly chosen exercise from the list of exercises. The reason that I have" << endl;
+    cout << "    chosen 3 sets per exercise is the fact that for most people, this won't be too many." << endl;
+    cout << "If you think that you're ready to make your own program, hit the enter key!" << endl;
+    cout << "(This will be populated with more information as the codebase grows)" << endl;
+    cin.get(); //wait for user to hit enter
+    do_it_yourself(exercises);
 }
